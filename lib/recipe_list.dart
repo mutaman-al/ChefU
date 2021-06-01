@@ -1,9 +1,9 @@
 // SecondScreen.dart
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:myeatsapp/recipe_steps.dart';
 
 class RecipeList extends StatefulWidget {
   final String screenTitle;
@@ -78,8 +78,8 @@ Widget recipes(String type) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => RecipeList(
-                                    '${snapshot.data[index]['Title']}')));
+                                builder: (context) => RecipeSteps(
+                                    type, '${snapshot.data[index]['Title']}')));
                       },
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -133,23 +133,6 @@ Future<List> getData(CollectionReference ref) async {
   return allData;
 }
 
-Future<List<Map<String, dynamic>>> _loadImages(String image) async {
-  FirebaseStorage storage = FirebaseStorage.instance;
-  List<Map<String, dynamic>> files = [];
-
-  final ListResult result = await storage.ref().list();
-  final List<Reference> allFiles = result.items;
-
-  await Future.forEach<Reference>(allFiles, (file) async {
-    final String fileUrl = await file.getDownloadURL();
-    files.add({
-      "url": fileUrl,
-    });
-  });
-
-  return files;
-}
-
 Future<String> getImage(String image) async {
   print(image);
   Reference ref = FirebaseStorage.instance.ref().child(image);
@@ -157,13 +140,6 @@ Future<String> getImage(String image) async {
   print(url);
   return url;
 }
-
-/*Future<void> _getImage() async {
-  final ref = FirebaseStorage.instance.ref().child('image.png');
-  var url = await ref.getDownloadURL();
-  print(url);
-  //Image.network(url);
-}*/
 
 /*ElevatedButton(
             child: Text('Back To HomeScreen'),
