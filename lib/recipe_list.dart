@@ -15,32 +15,8 @@ class RecipeList extends StatefulWidget {
 }
 
 class _RecipeListState extends State<RecipeList> {
-  final FirebaseStorage storage = FirebaseStorage.instance;
-
-  Uint8List imageBytes;
-  String errorMsg;
-
-  _RecipeListState() {
-    storage
-        .ref()
-        .child('image.jpg')
-        .getData(10000000)
-        .then((data) => setState(() {
-              imageBytes = data;
-            }))
-        .catchError((e) => setState(() {
-              errorMsg = e.error;
-            }));
-  }
-
   @override
   Widget build(BuildContext context) {
-    var img = imageBytes != null
-        ? Image.memory(
-            imageBytes,
-            fit: BoxFit.cover,
-          )
-        : Text(errorMsg != null ? errorMsg : "Loading...");
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -54,7 +30,7 @@ class _RecipeListState extends State<RecipeList> {
           ),
         ],
       ),
-      body: Container(child: recipes(widget.screenTitle, img)),
+      body: Container(child: recipes(widget.screenTitle)),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -76,7 +52,7 @@ class _RecipeListState extends State<RecipeList> {
   }
 }
 
-Widget recipes(String type, var thumbnail) {
+Widget recipes(String type) {
   CollectionReference ref = FirebaseFirestore.instance.collection(type);
   Future data = getData(ref);
 
@@ -102,8 +78,8 @@ Widget recipes(String type, var thumbnail) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    RecipeList('Result: ${snapshot.data}')));
+                                builder: (context) => RecipeList(
+                                    '${snapshot.data[index]['Title']}')));
                       },
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -119,7 +95,22 @@ Widget recipes(String type, var thumbnail) {
                               ),
                             ),
                           ),
-                          thumbnail,
+                          FutureBuilder(
+                            future: getImage(
+                                snapshot.data[index]['Title'] + ".jpg"),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<String> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                  return Text('Loading....');
+                                default:
+                                  if (snapshot.hasError)
+                                    return Text('Error: ${snapshot.error}');
+                                  else
+                                    return Image.network(snapshot.data);
+                              }
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -132,6 +123,10 @@ Widget recipes(String type, var thumbnail) {
 
 Future<List> getData(CollectionReference ref) async {
   QuerySnapshot querySnapshot = await ref.get();
+  /*var doc_ref = await FirebaseFirestore.instance.collection("Medium").get();
+  doc_ref.docs.forEach((result) {
+    print(result.id);
+  });*/
 
   final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
@@ -153,6 +148,14 @@ Future<List<Map<String, dynamic>>> _loadImages(String image) async {
   });
 
   return files;
+}
+
+Future<String> getImage(String image) async {
+  print(image);
+  Reference ref = FirebaseStorage.instance.ref().child(image);
+  String url = (await ref.getDownloadURL()).toString();
+  print(url);
+  return url;
 }
 
 /*Future<void> _getImage() async {
