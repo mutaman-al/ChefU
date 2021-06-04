@@ -78,11 +78,26 @@ Widget recipes(String type, String recipe) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: 250,
-                          height: 100,
-                          child: Text(
-                            'Step ${index + 1}:\n${snapshot.data['Steps']['${index + 1}']}',
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Step ${index + 1}:\n',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19,),
+                                ),
+                                Text(
+                                    '${snapshot.data['Steps']['${index + 1}']}',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+
+                            ),
                           ),
+
+
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,

@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 "Discovery",
                 textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             rowList,
@@ -30,6 +31,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 "Subscribed",
                 textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             rowList
@@ -40,6 +42,7 @@ class HomeScreen extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
+
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
@@ -91,6 +94,7 @@ Widget buildCard(text, BuildContext context) {
               child: Text(
                 text,
                 textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ),

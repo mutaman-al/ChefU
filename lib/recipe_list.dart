@@ -86,17 +86,27 @@ Widget recipes(String type) {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 250,
-                            height: 100,
                             child: Padding(
-                              padding: EdgeInsets.all(0),
-                              child: Text(
-                                '${snapshot.data[index]['Title']}\n\n${snapshot.data[index]['Description']}',
-                              ),
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${snapshot.data[index]['Title']}\n',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,),
+                                  ),
+                                  Text(
+                                    '\n${snapshot.data[index]['Description']}',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              )
                             ),
                           ),
                           FutureBuilder(
-                            future: getImage(
+                            future:
+                            getImage(
                                 snapshot.data[index]['Title'] + ".jpg"),
                             builder: (BuildContext context,
                                 AsyncSnapshot<String> snapshot) {
@@ -107,7 +117,13 @@ Widget recipes(String type) {
                                   if (snapshot.hasError)
                                     return Text('Error: ${snapshot.error}');
                                   else
-                                    return Image.network(snapshot.data);
+                                    return Align(
+                                      child: Padding(
+                                                padding: EdgeInsets.all(10),
+                                                child: Image.network(snapshot.data, height: 200, width: 400, fit: BoxFit.cover,)
+                                      ),
+                                      alignment: Alignment.center,
+                                    );
                               }
                             },
                           )
