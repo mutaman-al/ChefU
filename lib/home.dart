@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:myeatsapp/recipe_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myeatsapp/recipe_steps.dart';
+import 'package:myeatsapp/search.dart';
+import 'package:myeatsapp/settings.dart';
 
 void main() => runApp(HomeScreen());
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,6 +48,26 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          currentIndex: index,
+          onTap: (int index) {
+            setState(() {
+              this.index = index;
+            });
+            switch (index) {
+              case 0:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                break;
+              case 1:
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Search()));
+                break;
+              case 2:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+                break;
+            }
+          },
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),

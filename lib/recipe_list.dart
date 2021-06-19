@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:myeatsapp/home.dart';
 import 'package:myeatsapp/recipe_steps.dart';
+import 'package:myeatsapp/search.dart';
 
 class RecipeList extends StatefulWidget {
   final String screenTitle;
@@ -15,6 +17,7 @@ class RecipeList extends StatefulWidget {
 }
 
 class _RecipeListState extends State<RecipeList> {
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +35,25 @@ class _RecipeListState extends State<RecipeList> {
       ),
       body: Container(child: recipes(widget.screenTitle)),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: index,
+        onTap: (int index) {
+          setState(() {
+            this.index = index;
+          });
+          switch (index) {
+            case 0:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()));
+              break;
+            case 1:
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Search()));
+              break;
+            case 2:
+              Navigator.of(context).pushNamed('/history');
+              break;
+          }
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
