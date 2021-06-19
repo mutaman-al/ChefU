@@ -128,12 +128,17 @@ Widget recipes(String type, String recipe) {
                           children: [
                             IconButton(
                               onPressed: () {},
+                              icon: Icon(Icons.timer),
+                              color: Colors.red,
+                            ),
+                            IconButton(
+                              onPressed: () {},
                               icon: Icon(Icons.volume_up),
                               color: Colors.red,
                             ),
                             IconButton(
                               onPressed: () {},
-                              icon: Icon(Icons.timer),
+                              icon: Icon(Icons.video_library),
                               color: Colors.red,
                             ),
                           ],
