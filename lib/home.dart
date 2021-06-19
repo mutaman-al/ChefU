@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myeatsapp/recipe_list.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myeatsapp/recipe_steps.dart';
 
 void main() => runApp(HomeScreen());
 
@@ -25,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            rowList,
+            rowList("Medium"),
             Padding(
               padding: EdgeInsets.fromLTRB(11, 0, 0, 0),
               child: Text(
@@ -34,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            rowList
+            rowList("Daily")
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -42,7 +44,6 @@ class HomeScreen extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
-
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
@@ -104,32 +105,73 @@ Widget buildCard(text, BuildContext context) {
   );
 }
 
-Widget rowList = Container(
-  margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 11.0),
-  height: 200.0,
-  child: ListView(
-    scrollDirection: Axis.horizontal,
-    children: <Widget>[
-      Container(
-        width: 200.0,
-        color: Colors.red,
-      ),
-      Container(
-        width: 200.0,
-        color: Colors.blue,
-      ),
-      Container(
-        width: 200.0,
-        color: Colors.green,
-      ),
-      Container(
-        width: 200.0,
-        color: Colors.yellow,
-      ),
-      Container(
-        width: 200.0,
-        color: Colors.orange,
-      ),
-    ],
-  ),
-);
+Widget rowList(String type) {
+  CollectionReference ref = FirebaseFirestore.instance.collection(type);
+  Future data = getDataCollection(ref);
+  return Container(
+      margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 11.0),
+      height: 220.0,
+      child: FutureBuilder(
+        future: data, // async work
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Text('Loading....');
+            default:
+              if (snapshot.hasError)
+                return Text('Error: ${snapshot.error}');
+              else
+                return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: int.parse('${snapshot.data.length}'),
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: InkWell(
+                            splashColor: Colors.blue.withAlpha(30),
+                            onTap: () {
+                              print('Card tapped.');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RecipeSteps(type,
+                                          '${snapshot.data[index]['Title']}')));
+                            },
+                            child: Column(children: [
+                              Text(
+                                snapshot.data[index]['Title'],
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              FutureBuilder(
+                                future: getImage(
+                                    snapshot.data[index]['Title'] + ".jpg"),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String> snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.waiting:
+                                      return Text('Loading....');
+                                    default:
+                                      if (snapshot.hasError)
+                                        return Text('Error: ${snapshot.error}');
+                                      else
+                                        return Align(
+                                          child: Padding(
+                                              padding: EdgeInsets.all(10),
+                                              child: Image.network(
+                                                snapshot.data,
+                                                height: 170,
+                                                width: 200,
+                                                fit: BoxFit.cover,
+                                              )),
+                                          alignment: Alignment.center,
+                                        );
+                                  }
+                                },
+                              ),
+                            ])),
+                      );
+                    });
+          }
+        },
+      ));
+}

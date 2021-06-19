@@ -56,7 +56,7 @@ class _RecipeStepsState extends State<RecipeSteps> {
 Widget recipes(String type, String recipe) {
   CollectionReference ref = FirebaseFirestore.instance.collection(type);
   Future data = getData(ref, recipe);
-  print(data);
+  //print(data);
 
   //Visual stuff & widgets
   return FutureBuilder(
@@ -86,18 +86,18 @@ Widget recipes(String type, String recipe) {
                               children: [
                                 Text(
                                   'Step ${index + 1}:\n',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19,),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
                                 ),
                                 Text(
-                                    '${snapshot.data['Steps']['${index + 1}']}',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  '${snapshot.data['Steps']['${index + 1}']}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 )
                               ],
-
                             ),
                           ),
-
-
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,

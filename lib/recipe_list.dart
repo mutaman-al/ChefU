@@ -54,7 +54,7 @@ class _RecipeListState extends State<RecipeList> {
 
 Widget recipes(String type) {
   CollectionReference ref = FirebaseFirestore.instance.collection(type);
-  Future data = getData(ref);
+  Future data = getDataCollection(ref);
 
   //Visual stuff & widgets
   return FutureBuilder<List>(
@@ -87,26 +87,28 @@ Widget recipes(String type) {
                         children: [
                           SizedBox(
                             child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${snapshot.data[index]['Title']}\n',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,),
-                                  ),
-                                  Text(
-                                    '\n${snapshot.data[index]['Description']}',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              )
-                            ),
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${snapshot.data[index]['Title']}\n',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    Text(
+                                      '\n${snapshot.data[index]['Description']}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                )),
                           ),
                           FutureBuilder(
-                            future:
-                            getImage(
+                            future: getImage(
                                 snapshot.data[index]['Title'] + ".jpg"),
                             builder: (BuildContext context,
                                 AsyncSnapshot<String> snapshot) {
@@ -119,9 +121,13 @@ Widget recipes(String type) {
                                   else
                                     return Align(
                                       child: Padding(
-                                                padding: EdgeInsets.all(10),
-                                                child: Image.network(snapshot.data, height: 200, width: 400, fit: BoxFit.cover,)
-                                      ),
+                                          padding: EdgeInsets.all(10),
+                                          child: Image.network(
+                                            snapshot.data,
+                                            height: 200,
+                                            width: 400,
+                                            fit: BoxFit.cover,
+                                          )),
                                       alignment: Alignment.center,
                                     );
                               }
@@ -137,12 +143,8 @@ Widget recipes(String type) {
   );
 }
 
-Future<List> getData(CollectionReference ref) async {
+Future<List> getDataCollection(CollectionReference ref) async {
   QuerySnapshot querySnapshot = await ref.get();
-  /*var doc_ref = await FirebaseFirestore.instance.collection("Medium").get();
-  doc_ref.docs.forEach((result) {
-    print(result.id);
-  });*/
 
   final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
