@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myeatsapp/home.dart';
 import 'package:myeatsapp/search.dart';
 import 'package:myeatsapp/settings.dart';
+import 'package:myeatsapp/video.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class RecipeSteps extends StatefulWidget {
   final String collectionTitle;
@@ -19,6 +21,11 @@ class RecipeSteps extends StatefulWidget {
 
 class _RecipeStepsState extends State<RecipeSteps> {
   int index = 0;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,10 +143,35 @@ Widget recipes(String type, String recipe) {
                               icon: Icon(Icons.volume_up),
                               color: Colors.red,
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.video_library),
-                              color: Colors.red,
+                            FutureBuilder(
+                              future: getVideo(snapshot.data['Title'] +
+                                  '/' +
+                                  (index + 1).toString()),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<String> snapshott) {
+                                switch (snapshott.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return Text('Loading....');
+                                  default:
+                                    if (snapshott.hasError)
+                                      return Text('Error: ${snapshott.error}');
+                                    else
+                                      return IconButton(
+                                        onPressed: () {
+                                          print('Card tapped.');
+                                          print(snapshott.data);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      VideoScreen(
+                                                          snapshott.data)));
+                                        },
+                                        icon: Icon(Icons.video_library),
+                                        color: Colors.red,
+                                      );
+                                }
+                              },
                             ),
                           ],
                         )
@@ -159,9 +191,11 @@ Future getData(CollectionReference ref, String name) async {
 
   return document.data();
 }
-/*
-for (var i = 1;
-i <=
-int.parse('${snapshot.data['Steps'].length}');
-i++)
-*/
+
+Future<String> getVideo(String video) async {
+  Reference ref = FirebaseStorage.instance.ref().child(video + ".mp4");
+  print(video);
+  String url = (await ref.getDownloadURL()).toString();
+  print(url);
+  return url;
+}

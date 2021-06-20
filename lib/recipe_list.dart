@@ -174,10 +174,10 @@ Future<List> getDataCollection(CollectionReference ref) async {
 }
 
 Future<String> getImage(String image) async {
-  print(image);
+  //print(image);
   Reference ref = FirebaseStorage.instance.ref().child(image);
   String url = (await ref.getDownloadURL()).toString();
-  print(url);
+  //print(url);
   return url;
 }
 
