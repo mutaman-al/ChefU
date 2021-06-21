@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myeatsapp/recipe_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,7 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
       title: 'Welcome to Flutter',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('ChefU'),
+          centerTitle: true,
+          title:
+          Text(
+            'Chef-U',
+            style: TextStyle(fontWeight: FontWeight.bold,
+                fontSize: 40, color: Colors.white),
+
+          ),
         ),
         body: ListView(
           //crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,22 +101,24 @@ Widget navigation(BuildContext context) {
   return Column(
     children: [
       Row(children: [
-        buildCard("Daily", context),
-        buildCard("Quick", context),
+        buildCard("Daily", context, Colors.lightBlueAccent),
+        buildCard("Quick", context, Colors.green),
       ]),
       Row(children: [
-        buildCard("Medium", context),
-        buildCard("Long", context),
+        buildCard("Medium", context, Colors.yellow),
+        buildCard("Long", context, Colors.redAccent),
       ]),
     ],
   );
 }
 
-Widget buildCard(text, BuildContext context) {
+Widget buildCard(text, BuildContext context, Color col) {
+
   return Center(
     child: Padding(
       padding: EdgeInsets.all(11.0),
       child: Card(
+        color: col,
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
@@ -123,7 +133,7 @@ Widget buildCard(text, BuildContext context) {
               child: Text(
                 text,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, fontFamily: 'Raleway'),
               ),
             ),
           ),
