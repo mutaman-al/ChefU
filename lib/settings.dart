@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myeatsapp/home.dart';
 import 'package:myeatsapp/search.dart';
+import 'package:cupertino_setting_control/cupertino_setting_control.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -11,11 +14,33 @@ class _SettingsState extends State<SettingsScreen> {
   int index = 2;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final red_green_color_blind_mode_toggle = SettingRow(
+      rowData: SettingsYesNoConfig(
+        initialValue: true, title: 'Red-Green Color Blind Friendly Mode'),
+      config: const SettingsRowConfiguration(showAsSingleSetting: true),
+      style: const SettingsRowStyle(
+        fontSize: 25.0,
+        textColor: CupertinoColors.black,
+        contentPadding: 25.0,
+      )
+      );
+
+    final List<Widget> widgetList = [
+      const SizedBox(height:30.0),
+      red_green_color_blind_mode_toggle,
+      const SizedBox(height: 30.0),
+    ];
+
+    return new Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: Container(child: Text("Settings")),
+      body: Container(
+        child: ListView(
+          children: widgetList,
+          physics: const AlwaysScrollableScrollPhysics())
+        ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         onTap: (int index) {
