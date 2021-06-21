@@ -36,6 +36,7 @@ class _SettingsState extends State<SettingsScreen> {
         title: Text("Settings"),
       ),
       body: Container(
+        color: Colors.tealAccent,
         child: ListView(
           children: widgetList,
           physics: const AlwaysScrollableScrollPhysics())
