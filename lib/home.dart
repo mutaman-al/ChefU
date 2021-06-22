@@ -6,6 +6,7 @@ import 'package:myeatsapp/recipe_steps.dart';
 import 'package:myeatsapp/search.dart';
 import 'package:myeatsapp/settings.dart';
 
+
 void main() => runApp(HomeScreen());
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
+  bool toggled = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: ListView(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            navigation(context),
+            navigation(context, this.toggled),
             Padding(
               padding: EdgeInsets.fromLTRB(11, 0, 0, 0),
               child: Text(
@@ -71,8 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     context, MaterialPageRoute(builder: (context) => Search()));
                 break;
               case 2:
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => SettingsScreen()));
+                setState(() {
+                  if(this.toggled == true){
+                    this.toggled = false;
+                  }else{
+                    this.toggled = true;
+                  }
+                });
                 break;
             }
           },
@@ -86,8 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
+              icon: Icon(Icons.airline_seat_flat_angled),
+              label: 'Color-Blind Mode',
             ),
           ],
           selectedItemColor: Colors.amber[800],
@@ -97,11 +107,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget navigation(BuildContext context) {
+Widget navigation(BuildContext context, bool colorBlindModeOn) {
+  Color col;
+  if (colorBlindModeOn == false){
   return Column(
     children: [
       Row(children: [
-        buildCard("Daily", context, Colors.lightBlueAccent),
+        buildCard("Daily", context,
+            Colors.lightBlueAccent),
         buildCard("Quick", context, Colors.green),
       ]),
       Row(children: [
@@ -111,6 +124,23 @@ Widget navigation(BuildContext context) {
     ],
   );
 }
+  else if(colorBlindModeOn == true){
+    return Column(
+      children: [
+        Row(children: [
+          buildCard("Daily", context,
+              Colors.purple),
+          buildCard("Quick", context, Colors.purple),
+        ]),
+        Row(children: [
+          buildCard("Medium", context, Colors.purple),
+          buildCard("Long", context, Colors.purple),
+        ]),
+      ],
+    );
+  }
+}
+
 
 Widget buildCard(text, BuildContext context, Color col) {
 
