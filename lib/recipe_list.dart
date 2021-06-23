@@ -22,9 +22,7 @@ class _RecipeListState extends State<RecipeList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.screenTitle,
-        ),
+        title: Text(widget.screenTitle),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
@@ -33,7 +31,9 @@ class _RecipeListState extends State<RecipeList> {
           ),
         ],
       ),
-      body: Container(child: recipes(widget.screenTitle)),
+      body: Container(
+        child: recipes(widget.screenTitle),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         onTap: (int index) {
@@ -75,6 +75,7 @@ class _RecipeListState extends State<RecipeList> {
 }
 
 Widget recipes(String type) {
+  if (type == "Search") type = "Daily";
   CollectionReference ref = FirebaseFirestore.instance.collection(type);
   Future data = getDataCollection(ref);
 

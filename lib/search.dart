@@ -36,7 +36,7 @@ class _SearchState extends State<Search> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => RecipeList("Daily")));
+                          builder: (context) => RecipeList("Search")));
                 },
                 icon: Icon(Icons.search),
                 color: Colors.red,
