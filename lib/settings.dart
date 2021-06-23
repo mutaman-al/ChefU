@@ -4,7 +4,6 @@ import 'package:myeatsapp/home.dart';
 import 'package:myeatsapp/search.dart';
 import 'package:cupertino_setting_control/cupertino_setting_control.dart';
 
-
 class SettingsScreen extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();
@@ -15,18 +14,17 @@ class _SettingsState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final red_green_color_blind_mode_toggle = SettingRow(
-      rowData: SettingsYesNoConfig(
-        initialValue: true, title: 'Red-Green Color Blind Friendly Mode'),
-      config: const SettingsRowConfiguration(showAsSingleSetting: true),
-      style: const SettingsRowStyle(
-        fontSize: 25.0,
-        textColor: CupertinoColors.black,
-        contentPadding: 25.0,
-      )
-      );
+        rowData: SettingsYesNoConfig(
+            initialValue: true, title: 'Red-Green Color Blind Friendly Mode'),
+        config: const SettingsRowConfiguration(showAsSingleSetting: true),
+        style: const SettingsRowStyle(
+          fontSize: 25.0,
+          textColor: CupertinoColors.black,
+          contentPadding: 25.0,
+        ));
 
     final List<Widget> widgetList = [
-      const SizedBox(height:30.0),
+      const SizedBox(height: 30.0),
       red_green_color_blind_mode_toggle,
       const SizedBox(height: 30.0),
     ];
@@ -36,12 +34,10 @@ class _SettingsState extends State<SettingsScreen> {
         title: Text("Settings"),
       ),
       body: Container(
-        color: Colors.tealAccent,
-        child: ListView(
-          children: widgetList,
-          physics: const AlwaysScrollableScrollPhysics())
-        ),
-
+          color: Colors.tealAccent,
+          child: ListView(
+              children: widgetList,
+              physics: const AlwaysScrollableScrollPhysics())),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         onTap: (int index) {
