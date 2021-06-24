@@ -39,6 +39,7 @@ dev_dependencies:
   cloud_firestore: ^2.2.0
   firebase_storage: ^8.1.0
   chewie: ^0.12.2
+  image_picker: 0.6.0+17
   video_player:
 
 # For information on the generic Dart part of this file, see the

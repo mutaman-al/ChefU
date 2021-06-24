@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:myeatsapp/home.dart';
 import 'package:myeatsapp/recipe_steps.dart';
 import 'package:myeatsapp/search.dart';
+import 'package:myeatsapp/new_recipe.dart';
 
 class RecipeList extends StatefulWidget {
   final String screenTitle;
@@ -25,7 +26,10 @@ class _RecipeListState extends State<RecipeList> {
         title: Text(widget.screenTitle),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NewRecipe()));
+            },
             icon: Icon(Icons.add),
             color: Colors.red,
           ),

@@ -33,13 +33,6 @@ class _RecipeStepsState extends State<RecipeSteps> {
         title: Text(
           widget.recipeTitle,
         ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.add),
-            color: Colors.red,
-          ),
-        ],
       ),
       body:
           Container(child: recipes(widget.collectionTitle, widget.recipeTitle)),
