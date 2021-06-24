@@ -7,6 +7,8 @@ import 'package:myeatsapp/search.dart';
 import 'package:myeatsapp/settings.dart';
 import 'package:myeatsapp/video.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 class RecipeSteps extends StatefulWidget {
   final String collectionTitle;
@@ -82,6 +84,8 @@ Widget recipes(String type, String recipe) {
   Future data = getData(ref, recipe);
   //print(data);
 
+  FlutterTts tts = FlutterTts();
+
   //Visual stuff & widgets
   return FutureBuilder(
     future: data, // async work
@@ -118,6 +122,7 @@ Widget recipes(String type, String recipe) {
                                 Text(
                                   '${snapshot.data['Steps']['${index + 1}']}',
                                   style: TextStyle(fontWeight: FontWeight.bold),
+                                  key: Key("text" + index.toString()),
                                 )
                               ],
                             ),
@@ -132,7 +137,11 @@ Widget recipes(String type, String recipe) {
                               color: Colors.red,
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                var finder = find.byKey(Key("text" + index.toString()));
+                                var text = finder.evaluate().single.widget as Text;
+                                await tts.speak(text.data);
+                              },
                               icon: Icon(Icons.volume_up),
                               color: Colors.red,
                             ),
