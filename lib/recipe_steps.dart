@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myeatsapp/home.dart';
 import 'package:myeatsapp/search.dart';
 import 'package:myeatsapp/settings.dart';
+import 'package:myeatsapp/timer.dart';
 import 'package:myeatsapp/video.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -132,7 +133,10 @@ Widget recipes(String type, String recipe) {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => Timer("")));
+                              },
                               icon: Icon(Icons.timer),
                               color: Colors.red,
                             ),
