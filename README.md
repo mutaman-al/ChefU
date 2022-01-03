@@ -1,16 +1,5 @@
-# myeatsapp
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# ChefU
+ChefU is a crossplatform (IOS/Android) mobile app that allowed users to create and share recipes. It
+included features such as supporting video snippets for each separate step in a recipe as well as custom
+built-in timers that were preset in accordance with whatever a recipe demanded. Furthermore, with
+accessability in mind, the app also has support for text-to-speech and speech-to-text for the impaired.
